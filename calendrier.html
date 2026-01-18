@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Calendrier Simple</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 40px);
+      gap: 4px;
+      justify-content: center;
+    }
+
+    .day, .label {
+      padding: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .label {
+      font-weight: bold;
+      background: #eee;
+    }
+
+    .today {
+      background: blue;
+      color: white;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 id="monthYear"></h2>
+  <div class="calendar" id="calendar"></div>
+
+  <script>
+    // 📅 Date actuelle
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth(); // 0 = janvier
+    const today = now.getDate();
+
+    const monthNames = ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Déc"];
+    const dayNames = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+
+    // 🖊️ Afficher le mois et l'année
+    document.getElementById("monthYear").textContent = `${monthNames[month]} ${year}`;
+
+    const calendar = document.getElementById("calendar");
+
+    // 🗓️ Ajouter les noms des jours
+    dayNames.forEach(name => {
+      const label = document.createElement("div");
+      label.className = "label";
+      label.textContent = name;
+      calendar.appendChild(label);
+    });
+
+    // 🔢 Calcul du premier jour du mois
+    const firstDay = new Date(year, month, 1).getDay(); // JS: 0 = dimanche
+
+    // 🛠️ Adapter au format français (lundi = 0)
+    const start = (firstDay + 6) % 7;
+
+    // 🔢 Nombre de jours dans le mois
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // ⬜ Ajouter les cases vides
+    for (let i = 0; i < start; i++) {
+      const empty = document.createElement("div");
+      empty.className = "day";
+      calendar.appendChild(empty);
+    }
+
+    // 🔢 Ajouter les jours du mois
+    for (let i = 1; i <= daysInMonth; i++) {
+      const day = document.createElement("div");
+      day.className = "day";
+      day.textContent = i;
+
+      // 🎯 Marquer aujourd'hui
+      if (i === today && year === now.getFullYear() && month === now.getMonth()) {
+        day.classList.add("today");
+      }
+
+      calendar.appendChild(day);
+    }
+  </script>
+
+</body>
+</html>
+

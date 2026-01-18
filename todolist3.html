@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Todo List</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+button{
+    padding: 6px 10px;
+    margin: 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add{ background: green; color: white; }
+.red{ background: red; color: white; }
+.re{ background: blue; color: white; }
+.doneBtn{ background: orange; color: white; }
+
+li{
+    background: white;
+    margin: 8px 0;
+    padding: 10px;
+    list-style: none;
+    border-radius: 5px;
+}
+
+/* tâche terminée */
+.done span{
+    text-decoration: line-through;
+    color: gray;
+}
+</style>
+</head>
+
+<body>
+
+<h1>TODO LIST</h1>
+
+<input type="text" id="text" placeholder="Entrer une tâche">
+<button class="add" onclick="afficher()">Ajouter</button>
+
+<p id="count">Tâches : 0</p>
+<p id="empty">Aucune tâche</p>
+
+<ul id="aff"></ul>
+
+<script>
+
+/* ============================= */
+/*  CHARGER LES TÂCHES AU DÉPART */
+/* ============================= */
+window.onload = function(){
+    loadTasks();
+    updateCount();
+    checkEmpty();
+}
+
+/* ============================= */
+/*  AJOUTER UNE TÂCHE            */
+/* ============================= */
+function afficher(){
+    const text = document.getElementById("text").value.trim();
+
+    if(text === ""){
+        alert("Veuillez entrer une tâche");
+        return;
+    }
+
+    const li = document.createElement("li");
+
+    li.innerHTML = `
+        <span>${text}</span>
+        <button class="doneBtn" onclick="finish(this)">Terminé</button>
+        <button class="re" onclick="edit(this)">Modifier</button>
+        <button class="red" onclick="delet(this)">Supprimer</button>
+    `;
+
+    document.getElementById("aff").appendChild(li);
+    document.getElementById("text").value = "";
+
+    saveTasks();     // 🔥 sauvegarder
+    updateCount();
+    checkEmpty();
+}
+
+/* ============================= */
+/*  TERMINER UNE TÂCHE           */
+/* ============================= */
+function finish(button){
+    const li = button.parentElement;
+    li.classList.toggle("done");
+
+    saveTasks(); // 🔥 sauvegarder l'état terminé
+}
+
+/* ============================= */
+/*  MODIFIER UNE TÂCHE           */
+/* ============================= */
+function edit(button){
+    const li = button.parentElement;
+    const span = li.querySelector("span");
+
+    const newtext = prompt("Modifier la tâche", span.textContent);
+
+    if(newtext !== null && newtext.trim() !== ""){
+        span.textContent = newtext;
+        saveTasks(); // 🔥 sauvegarder le nouveau texte
+    }
+}
+
+/* ============================= */
+/*  SUPPRIMER UNE TÂCHE          */
+/* ============================= */
+function delet(button){
+    if(confirm("Supprimer cette tâche ?")){
+        button.parentElement.remove();
+
+        saveTasks(); // 🔥 sauvegarder
+        updateCount();
+        checkEmpty();
+    }
+}
+
+/* ============================= */
+/*  COMPTEUR DE TÂCHES           */
+/* ============================= */
+function updateCount(){
+    const tasks = document.querySelectorAll("li");
+    document.getElementById("count").textContent =
+        "Tâches : " + tasks.length;
+}
+
+/* ============================= */
+/*  MESSAGE LISTE VIDE           */
+/* ============================= */
+function checkEmpty(){
+    const tasks = document.querySelectorAll("li");
+    document.getElementById("empty").style.display =
+        tasks.length === 0 ? "block" : "none";
+}
+
+/* ============================= */
+/*  SAUVEGARDER LES TÂCHES 💾    */
+/* ============================= */
+function saveTasks(){
+    const tasks = [];
+    document.querySelectorAll("li").forEach(li => {
+        tasks.push({
+            text: li.querySelector("span").textContent,
+            done: li.classList.contains("done")
+        });
+    });
+
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+// laisser le sauvegarde
+function loadTasks(){
+    const saved = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    saved.forEach(task => {
+        const li = document.createElement("li");
+
+        if(task.done){
+            li.classList.add("done");
+        }
+
+        li.innerHTML = `
+            <span>${task.text}</span>
+            <button class="doneBtn" onclick="finish(this)">Terminé</button>
+            <button class="re" onclick="edit(this)">Modifier</button>
+            <button class="red" onclick="delet(this)">Supprimer</button>
+        `;
+
+        document.getElementById("aff").appendChild(li);
+    });
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+   <input type="text" placeholder="entrez l'url" id="text">
+   <button onclick="generer()" >GENERER</button>
+   <div id="qr" ></div>
+   <script>
+    function generer(){
+        const text=document.getElementById('text').value.trim()
+        const qr =document.getElementById('qr')
+        qr.innerHTML=""
+        if(text===""){
+            alert('veuillez entrez une url')
+            return
+        }
+        new QRCode(qr,{
+             text:text,
+        width:250,
+        height:300,
+        colorDark:"#000000",
+        colorLight:"#ffffff",
+        CorrectLevel:QRCode.CorrectLevel.H
+        })
+
+    }
+   </script>
+</body>
+</html>

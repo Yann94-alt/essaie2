@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des tâches</title>
+    <style>
+        .add {
+            background-color: green;   
+            color: white;
+        }
+
+        .red {
+            background: red; 
+            color:white;
+        }
+
+        .blue {
+            background: blue;
+            color:white;
+        }
+
+        .done {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        button{
+            padding: 6px 10px;
+            margin: 2px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input {
+            padding: 5px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Liste des tâches</h2>
+<input type="text" placeholder="Entrez votre tâche" id="text">
+<button onclick="affiche()" class="add">Valider</button>
+
+<ul id="p"></ul>
+
+<script>
+    function affiche() {
+        const text = document.getElementById('text').value.trim();
+
+        if(text === "") {
+            alert("Veuillez remplir le champ correctement");
+            return;
+        }
+
+        const li = document.createElement("li");
+        li.innerHTML = `
+            <span>${text}</span>
+            <button class="red" onclick="delet(this)">Supprimer</button>
+            <button class="blue" onclick="edit(this)">Modifier</button>
+            <button class="doneBtn" onclick="finish(this)">Terminé</button>
+        `;
+
+        document.getElementById("p").appendChild(li);
+        document.getElementById('text').value = "";
+    }
+
+    function delet(button) {
+        const li = button.parentElement;
+        li.remove();
+    }
+
+    function edit(button) {
+        const li = button.parentElement;
+        const span = li.querySelector("span");
+        const newtext = prompt("Modifier la tâche :", span.textContent);
+
+        if(newtext !== null && newtext.trim() !== "") {
+            span.textContent = newtext;
+        }
+    }
+
+    function finish(button) {
+        const li = button.parentElement;
+        const ul = li.parentElement;
+        const editBtn = li.querySelector(".blue");
+
+        li.classList.toggle("done");
+
+        if(li.classList.contains("done")) {
+            button.textContent = "Annuler";
+            editBtn.disabled = true; // désactive le bouton Modifier
+            ul.appendChild(li);      // met la tâche en bas
+        } else {
+            button.textContent = "Terminé";
+            editBtn.disabled = false; // réactive le bouton Modifier
+            ul.prepend(li);           // remet la tâche en haut
+        }
+    }
+</script>
+
+</body>
+</html>

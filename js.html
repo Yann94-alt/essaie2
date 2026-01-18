@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body>
+    <style>
+        img{
+            height: auto;
+            width: 300px;
+        }
+        
+    </style>
+    <div class="box">
+        <select name="" id="select"></select>
+        <h3  id="name" ></h3 >
+        <img src="" alt="" id="img">
+        <p id="prix" ></p>
+        <p id="stock" > </p>
+        <button id="bt">commander</button>
+    </div>
+     <h2> <strong>listes</strong>des commandes </h2>
+     <table  border="1">
+        <thead>
+            <tr>
+                <th>nom</th>
+                <th>prix</th>
+                <th>disponibilite</th>
+                <th>date</th>
+            </tr>
+        </thead>
+        <tbody  id="historique" >   </tbody>
+     </table>
+    <script>
+        const produits=[
+            {nom:"tv",prix:12000,stock:5,img:"https://th.bing.com/th/id/R.e51a96b50cd7538e9bf5c38a9af28364?rik=yUKnxU2JQ3kfQg&riu=http%3a%2f%2fpluspng.com%2fimg-png%2ftv-png-haier-tv-png-1200.png&ehk=L19uXTt%2bbOHzlK%2f8jDlbRnDH%2bmXKYoTlhSYhVzV6QbA%3d&risl=&pid=ImgRaw&r=0"},
+            {nom:"casque",prix:9000,stock:2,img:"https://tse2.mm.bing.net/th/id/OIP.jbT8Zub5PTRzjHC-4OcACgHaHa?rs=1&pid=ImgDetMain&o=7&rm=3"}
+        ];
+        const select=document.getElementById("select");
+        const name=document.getElementById("name");
+        const prix=document.getElementById("prix");
+        const img=document.getElementById("img");
+        const stock=document.getElementById("stock");
+        const historiqueTable=document.getElementById("historique")
+      
+
+        //remplir le seect
+     for (let i = 0; i < produits.length; i++) {
+    const option = document.createElement("option");
+    option.value = i;
+    option.textContent = produits[i].nom;
+    select.appendChild(option);
+}
+// afficher les elemntes
+select.addEventListener("change",function(){
+  const prod=produits[this.value];
+  name.textContent=prod.nom;
+  img.src=prod.img;
+  prix.textContent=prod.prix + " fcfa";
+  stock.textContent=prod.stock +" disponible"
+})
+
+function historique(nom,prix,stock){
+    const tr=document.createElement("tr");
+    const date =new Date().toLocaleString();
+    tr.innerHTML=`
+    <td>${nom}</td>
+    <td>${prix}</td>
+    <td>${stock}</td>
+      <td>${date}</td>
+      `;
+      historiqueTable.appendChild(tr);
+    
+}
+// boutton
+bt.addEventListener("click",function(){
+    const p = produits[select.value]
+    const confirmation =confirm("voulez vous ce produit?")
+    if (confirmation){
+        historique(p.nom,p.prix,p.stock)
+    }
+
+})
+
+select.value=0;
+select.dispatchEvent(new Event ("change"))
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="calculatrice">
+        <input type="text" id="ecran" disabled>
+     <div class="buttons" >
+<button  onclick="ajouter('1')" >1</button>
+<button  onclick="ajouter('2')" >2</button>
+<button  onclick="ajouter('3')" >3</button>
+<button  onclick="ajouter('4')" >4</button>
+<button  onclick="ajouter('5')" >5</button>
+<button  onclick="calculer('=')" >=</button>
+<button  onclick="ajouter('+')" >+</button>
+<button  onclick="rest('c')" >c</button>
+<button  onclick="ajouter('*')" >*</button>
+<button  onclick="racine('v')" >v</button>
+<button  onclick="cos('cos')" >cos</button>
+<button  onclick="sin('sin')" >sin</button>
+     </div>
+    </div>
+<script>
+let ecran=document.getElementById('ecran');
+function ajouter(valeur){
+    ecran.value+=valeur
+}
+function calculer(valeur){
+    try{
+ecran.value=eval(ecran.value)
+    }catch{
+ecran.value="erreur"
+    }
+}
+function rest(){
+    ecran.value="";
+}
+function racine(){
+    try{
+      ecran.value=Math.sqrt(eval(ecran.value))
+    }catch{
+ecran.value="erreur"
+    }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" id="form">
+        <input type="text" placeholder="entrez votre nom" id="nom">
+        <input type="number" placeholder="entrez votre age" id="age">
+        <button >Envoyer</button>
+    </form>
+     <p id="afficher" ></p>
+    <script>
+    const form=document.getElementById('form');
+    const afficher=document.getElementById('afficher')
+    form.addEventListener('submit',envoyer) 
+    function envoyer(event){
+        event.preventDefault();
+        let nom=document.getElementById('nom').value;
+        let age=document.getElementById('age').value;
+        afficher.textContent="Bienvenue "+nom+"tu as"+age +"ans";
+        setTimeout(function(){
+              afficher.textContent="";
+        },4000)
+        
+
+    }
+    </script>
+    
+</body>
+</html>

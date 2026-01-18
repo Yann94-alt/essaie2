@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>TO DO LIST</h2>
+    <input type="text" placeholder="entrez votre tache" id="text">
+    <button onclick="afficher()">valider</button>
+    <ul id="ok"></ul>
+
+<script>
+function afficher(){
+    const text = document.getElementById("text").value.trim();
+
+    if(text === ""){
+        alert("veuillez remplir les champs");
+        return;
+    }
+
+    const li = document.createElement("li");
+    li.innerHTML = `
+        <span>${text}</span>
+        <button onclick="delet(this)">SUPPRIMER</button>
+        <button onclick="edit(this)">MODIFIER</button>
+    `;
+    document.getElementById("ok").appendChild(li);
+
+    document.getElementById("text").value = "";
+}
+
+function delet(button){
+    const li = button.parentElement;
+    li.remove();
+}
+
+function edit(button){
+    const li = button.parentElement;
+    const span = li.querySelector("span");
+    const nouveauText = prompt("Modifier la tâche :", span.textContent);
+
+    if(nouveauText !== null && nouveauText.trim()  !== ""){
+        span.textContent = nouveauText;
+    }
+}
+</script>
+</body>
+</html>
